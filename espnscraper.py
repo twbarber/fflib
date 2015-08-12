@@ -3,6 +3,7 @@ import cookielib
 
 
 class EspnScraper(object):
+
     LOGIN_URL = 'http://m.espn.go.com/wireless/login'
     STANDINGS_URL = 'http://games.espn.go.com/ffl/standings?leagueId={0}&seasonId={1}'
     SCOREBOARD_URL = 'http://games.espn.go.com/ffl/scoreboard?leagueId={0}&seasonId={1}'
@@ -10,7 +11,7 @@ class EspnScraper(object):
     FA_URL = 'http://games.espn.go.com/ffl/freeagency?leagueId={0}&teamId={1}'
     SCORING_URL = 'http://games.espn.go.com/ffl/leaders?leagueId={0}&teamId={1}&scoringPeriodId={2}'
     WAIVER_URL = 'http://games.espn.go.com/ffl/tools/waiverorder?leagueId={0}'
-    TRASACTIONS_URL = 'http://games.espn.go.com/ffl/tools/transactioncounter?leagueId={0}'
+    TRANSACTIONS_URL = 'http://games.espn.go.com/ffl/tools/transactioncounter?leagueId={0}'
 
     def __init__(self, config):
         self.config = dict(config.items('default'))
@@ -31,18 +32,18 @@ class EspnScraper(object):
         br.submit()
         return br
 
-    def get_standings_html(self):
+    def standings_html(self):
         self.browser.open(self.STANDINGS_URL.format(self.league, self.season))
         return self.browser.response().read()
 
-    def get_roster_html(self, team):
-        self.browser.open(self.config.ESPN_ROSTER_URL)
-        return
+    def roster_html(self, team):
+        self.browser.open(self.ROSTER_URL.format(self.league, team, self.season))
+        return self.browser.response().read()
 
-    def get_fa_tables(self):
-        self.browser.open(self.config.ESPN_STANDINGS_URL)
-        return
+    def fa_html(self, team):
+        self.browser.open(self.FA_URL.format(self.league, team))
+        return self.browser.response().read()
 
-    def get_pkup_tables(self):
-        self.browser.open(self.config.ESPN_STANDINGS_URL)
-        return
+    def transactions_html(self):
+        self.browser.open(self.TRANSACTIONS_URL.format(self.league))
+        return self.browser.response().read()

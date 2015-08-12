@@ -2,6 +2,7 @@ from bs4 import BeautifulSoup
 
 
 class StandingsTableMapper(object):
+
     EAST_STANDINGS_ID = 2
     WEST_STANDINGS_ID = 3
     EAST_DETAIL_ID = 4
@@ -10,33 +11,40 @@ class StandingsTableMapper(object):
     def __init__(self, config):
         self.config = config
 
-    def get_standings_tables(self, html):
+    def all_tables(self, html):
         soup = BeautifulSoup(html, "html.parser")
         tables = soup.findAll("table")
-        return {
+        tabs = {
             "east": tables[self.EAST_STANDINGS_ID],
             "west": tables[self.WEST_STANDINGS_ID],
             "east_detail": tables[self.EAST_DETAIL_ID],
             "west_detail": tables[self.WEST_DETAIL_ID]
         }
+        return tabs
 
-    def get_standings_map(self, table):
+    def standings_table(self, table, mask):
         data = self.parse_rows(table)
-        standings_map = {}
+        standings = Table(data[0], data[1])
         for i, team in enumerate(data[2:8], start=1):
             team_entry = StandingsEntry(*team)
-            standings_map[i] = team_entry
-        return standings_map
+            if mask:
+                team_entry.name = 'Team ' + str(i)
+            standings.add_row(i, team_entry.values())
+        return standings
 
-    def get_standings_detail_map(self, table):
+    def standings_detail_table(self, table, mask):
         data = self.parse_rows(table)
-        standings_map = {}
+        standings_detail = Table(data[0], data[1])
         for i, team in enumerate(data[2:10], start=1):
             team_entry = StandingsDetailEntry(*team)
-            standings_map[i] = team_entry
-        return standings_map
+            if mask:
+                team_entry.owner = ''
+                team_entry.team = 'Team ' + str(i)
+            standings_detail.add_row(i, team_entry)
+        return standings_detail
 
-    def parse_rows(self, table):
+    @staticmethod
+    def parse_rows(table):
         rows = table.findAll('tr')
         data = []
         for row in rows:
@@ -44,6 +52,16 @@ class StandingsTableMapper(object):
             cols = [ele.text.strip() for ele in cols]
             data.append([ele for ele in cols if ele])
         return data
+
+
+class Table(object):
+    def __init__(self, title, columns):
+        self.title = title
+        self.columns = columns
+        self.rows = {}
+
+    def add_row(self, row, values):
+        self.rows[row] = values
 
 
 class StandingsEntry(object):
@@ -65,6 +83,17 @@ class StandingsEntry(object):
             'GB:\t' + self.gb
         )
         return string
+
+    def values(self):
+        values = [
+            self.name,
+            self.win,
+            self.loss,
+            self.tie,
+            self.pct,
+            self.gb
+        ]
+        return values
 
 
 class StandingsDetailEntry(object):
