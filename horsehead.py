@@ -8,7 +8,7 @@ config = ConfigParser.RawConfigParser()
 config.read('config.ini')
 
 scraper = EspnScraper(config)
-std_table = StandingsTableMapper(config)
+std_table = StandingsTableMapper(config, hide=True)
 
 hidden = True
 html = scraper.standings_html()
