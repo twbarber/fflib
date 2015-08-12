@@ -2,6 +2,11 @@ from bs4 import BeautifulSoup
 
 
 class StandingsTableMapper(object):
+    EAST_STANDINGS_ID = 2
+    WEST_STANDINGS_ID = 3
+    EAST_DETAIL_ID = 4
+    WEST_DETAIL_ID = 5
+
     def __init__(self, config):
         self.config = config
 
@@ -9,10 +14,10 @@ class StandingsTableMapper(object):
         soup = BeautifulSoup(html, "html.parser")
         tables = soup.findAll("table")
         return {
-            "east": tables[self.config.EAST_STANDINGS_ID],
-            "west": tables[self.config.WEST_STANDINGS_ID],
-            "east_detail": tables[self.config.EAST_DETAIL_ID],
-            "west_detail": tables[self.config.WEST_DETAIL_ID]
+            "east": tables[self.EAST_STANDINGS_ID],
+            "west": tables[self.WEST_STANDINGS_ID],
+            "east_detail": tables[self.EAST_DETAIL_ID],
+            "west_detail": tables[self.WEST_DETAIL_ID]
         }
 
     def get_standings_map(self, table):
