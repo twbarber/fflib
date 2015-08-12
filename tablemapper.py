@@ -8,8 +8,9 @@ class StandingsTableMapper(object):
     EAST_DETAIL_ID = 4
     WEST_DETAIL_ID = 5
 
-    def __init__(self, config):
+    def __init__(self, config, hide):
         self.config = config
+        self.hide = hide
 
     def all_tables(self, html):
         soup = BeautifulSoup(html, "html.parser")
@@ -22,24 +23,19 @@ class StandingsTableMapper(object):
         }
         return tabs
 
-    def standings_table(self, table, mask):
+    def standings_table(self, table):
         data = self.parse_rows(table)
         standings = Table(data[0], data[1])
         for i, team in enumerate(data[2:8], start=1):
             team_entry = StandingsEntry(*team)
-            if mask:
-                team_entry.name = 'Team ' + str(i)
             standings.add_row(i, team_entry.values())
         return standings
 
-    def standings_detail_table(self, table, mask):
+    def standings_detail_table(self, table):
         data = self.parse_rows(table)
         standings_detail = Table(data[0], data[1])
         for i, team in enumerate(data[2:10], start=1):
             team_entry = StandingsDetailEntry(*team)
-            if mask:
-                team_entry.owner = ''
-                team_entry.team = 'Team ' + str(i)
             standings_detail.add_row(i, team_entry)
         return standings_detail
 
@@ -52,7 +48,6 @@ class StandingsTableMapper(object):
             cols = [ele.text.strip() for ele in cols]
             data.append([ele for ele in cols if ele])
         return data
-
 
 class Table(object):
     def __init__(self, title, columns):

@@ -1,6 +1,15 @@
 espnfflib
 =========
 
+espnfflib is a way to circumvent ESPN's lack of fantasy football API. This library will allow the user
+to gather information about their league on request.
+
+- Pull league standings, and detail standings from STANDINGS Tab
+- Pull Rosters from Individual Teams
+- Pull Free Agency List per League
+- Pull Transaction Counter per League
+- Pull Matchup Information per Matchup
+
 ## Display Text Based Tables
 
     +--------+---+---+---+------+----+
