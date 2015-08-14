@@ -1,8 +1,9 @@
 import ConfigParser
 
 from prettytable import PrettyTable
-from espnscraper import EspnScraper
-from tablemapper import StandingsTableMapper
+
+from fflib.espn.espnscraper import EspnScraper
+from fflib.espn.tablemapper import StandingsTableMapper
 
 config = ConfigParser.RawConfigParser()
 config.read('config.ini')

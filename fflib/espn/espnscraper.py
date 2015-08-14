@@ -12,9 +12,10 @@ class EspnScraper(object):
     SCORING_URL = 'http://games.espn.go.com/ffl/leaders?leagueId={0}&teamId={1}&scoringPeriodId={2}'
     WAIVER_URL = 'http://games.espn.go.com/ffl/tools/waiverorder?leagueId={0}'
     TRANSACTIONS_URL = 'http://games.espn.go.com/ffl/tools/transactioncounter?leagueId={0}'
+    SETTINGS_URL = 'http://games.espn.go.com/ffl/leaguesetup/settings?leagueId={1}'
 
     def __init__(self, config):
-        self.config = dict(config.items('default'))
+        self.config = dict(config.items('espn'))
         self.league = self.config.get('user.league')
         self.season = self.config.get('user.season')
         self.user = self.config.get('user.name')
