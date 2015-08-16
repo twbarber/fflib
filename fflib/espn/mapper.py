@@ -1,7 +1,8 @@
 from bs4 import BeautifulSoup
 
 
-class StandingsTableMapper(object):
+class StandingsTable(object):
+
     EAST_STANDINGS_ID = 2
     WEST_STANDINGS_ID = 3
     EAST_DETAIL_ID = 4

@@ -2,14 +2,14 @@ import ConfigParser
 
 from prettytable import PrettyTable
 
-from fflib.espn.espnscraper import EspnScraper
-from fflib.espn.tablemapper import StandingsTableMapper
+from espn.scraper import EspnScraper
+from espn.mapper import StandingsTable
 
 config = ConfigParser.RawConfigParser()
 config.read('config.ini')
 
 scraper = EspnScraper(config)
-std_table = StandingsTableMapper(config, hide=True)
+std_table = StandingsTable(config, hide=True)
 
 hidden = True
 html = scraper.standings_html()

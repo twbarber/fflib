@@ -43,6 +43,7 @@ class StandingsTable(Table):
 
 class DetailStandingsTable(Table):
     class DetailStandingsEntry(object):
+
         def __init__(self, club, pf, pa, home, away, div, streak):
             club_info = self.parse_club(club)
             if len(club_info) == 1:
