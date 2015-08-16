@@ -2,7 +2,7 @@ import mechanize
 import cookielib
 
 
-class EspnScraper(object):
+class EspnDao(object):
 
     LOGIN_URL = 'http://m.espn.go.com/wireless/login'
     STANDINGS_URL = 'http://games.espn.go.com/ffl/standings?leagueId={0}&seasonId={1}'
@@ -33,18 +33,42 @@ class EspnScraper(object):
         br.submit()
         return br
 
-    def standings_html(self):
+    def standings(self):
         self.browser.open(self.STANDINGS_URL.format(self.league, self.season))
         return self.browser.response().read()
 
-    def roster_html(self, team):
+    def roster(self, team):
         self.browser.open(self.ROSTER_URL.format(self.league, team, self.season))
         return self.browser.response().read()
 
-    def fa_html(self, team):
+    def freeagent(self, team):
         self.browser.open(self.FA_URL.format(self.league, team))
         return self.browser.response().read()
 
-    def transactions_html(self):
+    def transactions(self):
         self.browser.open(self.TRANSACTIONS_URL.format(self.league))
         return self.browser.response().read()
+
+    def settings(self):
+        self.browser.open(self.TRANSACTIONS_URL.format(self.league))
+        return self.browser.response().read()
+
+
+class CbsDao(object):
+    def __init__(self, config):
+        self.config = dict(config.items('cbs'))
+        self.league = self.config.get('user.league')
+        self.season = self.config.get('user.season')
+        self.user = self.config.get('user.name')
+        self.password = self.config.get('user.password')
+        self.browser = self.connect()
+
+
+class NflDao(object):
+    def __init__(self, config):
+        self.config = dict(config.items('nfl'))
+        self.league = self.config.get('user.league')
+        self.season = self.config.get('user.season')
+        self.user = self.config.get('user.name')
+        self.password = self.config.get('user.password')
+        self.browser = self.connect()
