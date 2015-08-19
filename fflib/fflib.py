@@ -1,26 +1,29 @@
 import ConfigParser
 
-from prettytable import PrettyTable
+from common.dao import EspnDao
+from common.mapper import StandingsTable
 
-from espn.scraper import EspnScraper
-from espn.mapper import StandingsTable
 
-config = ConfigParser.RawConfigParser()
-config.read('config.ini')
+def config():
+    parser = ConfigParser.RawConfigParser()
+    parser.read('../config.ini')
+    return parser
 
-scraper = EspnScraper(config)
-std_table = StandingsTable(config, hide=True)
 
-hidden = True
-html = scraper.standings_html()
-tables = std_table.all_tables(html)
-standings_e = std_table.standings_table(tables.get("east"), hidden)
-standings_w = std_table.standings_table(tables.get("west"), hidden)
-standings_d_e = std_table.standings_detail_table(tables.get("east_detail"), hidden)
-standings_d_w = std_table.standings_detail_table(tables.get("west_detail"), hidden)
+class League(object):
+    def __init__(self, platform):
+        if platform in ['ESPN']:
+            self.platform = 'ESPN'
+            self.config = config()
+            self.dao = EspnDao(self.config)
 
-table = PrettyTable(standings_w.columns)
-table.align[standings_w.columns[0]] = 'l'
-for i, row in enumerate(standings_w.rows, start=1):
-    table.add_row(standings_w.rows[i])
-print table
+    def standings(self):
+        html = self.dao.standings()
+        table = Table()
+
+    def detail_standings(self):
+        html = self.dao.standings()
+        table = Table(True)
+
+    def settings(self):
+        return
