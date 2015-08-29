@@ -1,9 +1,22 @@
 fflib
 =========
 
-fflib gives access to various fantasy football league data across multiple latforms. The library is intended to provide easy access to standings, rosters, free agent, and weekly matchups for use by league managers.
+fflib gives access to various fantasy football league data across multiple latforms. The library is intended to provide 
+easy access to standings, rosters, free agent, and weekly matchups for use by league managers.
 
 Currently, the only platform supported is ESPN. Others will be added in the future.
+
+espn
+=========
+
+In order to use fflib with your ESPN fantasy football data, your league will have to be open to the public. To do this,
+your commisioner will need nable this option in the League's settings. Simply visit:
+
+    http://games.espn.go.com/ffl/leaguesetup/settings?leagueId=<YOUR_LEAGUE_ID>
+    
+Make sure to replace the <YOUR_LEAGUE_ID> token with your actual league id that can be found in the address bar when
+you're at your league's home page. Under Basic settings, select 'Yes' from the 'Make League Viewable to Public' 
+dropdown. Afterwards, you'll be able to access league data using this library.
 
 ## Current Planned Features
 

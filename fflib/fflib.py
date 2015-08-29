@@ -1,7 +1,6 @@
 import ConfigParser
 
-from common.dao import EspnDao
-from common.mapper import StandingsTable
+from fflib.espn.dao import EspnDao
 
 
 def config():
