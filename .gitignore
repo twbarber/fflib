@@ -44,3 +44,4 @@ docs/_build
 
 # Config
 config.ini
+.idea/*

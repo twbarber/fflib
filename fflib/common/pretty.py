@@ -1,3 +1,5 @@
+__author__ = 'Tyler'
+
 class Table(object):
     def __init__(self, title, columns):
         self.title = title
