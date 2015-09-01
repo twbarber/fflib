@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 
 
 class EspnDao(object):
+
     ESPN_PREFIX = 'http://games.espn.go.com/ffl/'
     STANDINGS_URL = '{0}standings?leagueId={1}&seasonId={2}'
     SCOREBOARD_URL = '{0}scoreboard?leagueId={1}&seasonId={2}'
@@ -13,6 +14,11 @@ class EspnDao(object):
     TRANSACTIONS_URL = '{0}tools/transactioncounter?leagueId={1}'
     SETTINGS_URL = '{0}leaguesetup/settings?leagueId={1}'
 
+    EAST_STANDINGS_ID = 2
+    WEST_STANDINGS_ID = 3
+    EAST_DETAIL_ID = 4
+    WEST_DETAIL_ID = 5
+
     def __init__(self, config):
         self.config = dict(config.items('espn'))
         self.league = self.config.get('user.league')
@@ -20,13 +26,11 @@ class EspnDao(object):
         self.browser = self.connect()
 
     def connect(self):
-        cj = cookielib.CookieJar()
-        browser = mechanize.Browser()
-        browser.set_cookiejar(cj)
-        return browser
+        return mechanize.Browser()
 
     def standings(self):
-        tables = self.standings_tables()
+        tables = self.standings_html()
+        print tables
         divisions = {
             "east": tables[self.EAST_STANDINGS_ID],
             "west": tables[self.WEST_STANDINGS_ID]
@@ -34,7 +38,9 @@ class EspnDao(object):
         return divisions
 
     def standings_detail(self):
-        tables = self.standings_tables()
+        tables = self.standings_tables_html()
+        print tables
+        """
         division_html = {
             "east": tables[self.EAST_DETAIL_ID],
             "west": tables[self.WEST_DETAIL_ID]
@@ -43,39 +49,38 @@ class EspnDao(object):
         divisions["east"] = self.parse_rows(division_html["east"])
         divisions["west"] = self.parse_rows(division_html["west"])
         return divisions
+        """
 
-    def standings_tables(self):
-        html = html()
-        tables = soup.findAll("table")
+    def standings_html(self):
+        url = self.STANDINGS_URL.format(self.ESPN_PREFIX, self.league, self.season)
+        return self.get_html(url)
 
-    def roster(self, team):
-        self.browser.open(self.ROSTER_URL.format(self.ESPN_PREFIX, team, self.season))
+    def standings_detail_html(self):
+        url = self.STANDINGS_URL.format(self.ESPN_PREFIX, self.league, self.season)
+        return self.get_html(url)
+
+    def roster_html(self, team):
+        url = self.ROSTER_URL.format(self.ESPN_PREFIX, team, self.season)
+        return self.get_html(url)
+
+    def free_agent_html(self, team):
+        url = self.FA_URL.format(self.ESPN_PREFIX, team)
+        return self.get_html(url)
+
+    def transaction_html(self):
+        url = self.TRANSACTIONS_URL.format(self.ESPN_PREFIX, self.league)
+        return self.get_html(url)
+
+    def settings_html(self):
+        url = self.TRANSACTIONS_URL.format(self.ESPN_PREFIX, self.league)
+        return self.get_html(url)
+
+    def get_html(self, url):
+        self.browser.open(url)
         return self.browser.response().read()
-
-    def free_agent(self, team):
-        self.browser.open(self.FA_URL.format(self.ESPN_PREFIX, team))
-        return self.browser.response().read()
-
-    def transactions(self):
-        self.browser.open(self.TRANSACTIONS_URL.format(self.ESPN_PREFIX, self.league))
-        html = self.browser.response().read()
-
-    def settings(self):
-        self.browser.open(self.TRANSACTIONS_URL.format(self.ESPN_PREFIX, self.league))
-        html = self.browser.response().read()
-
-    def html(self, url, *args):
-        self.browser.open(url, )
-        html = self.browser.response().read()
-        return html
 
 
 class Parser(object):
-    def standings(self):
-        return
-
-    def detail_standings(self):
-        return
 
     @staticmethod
     def parse_rows(table):

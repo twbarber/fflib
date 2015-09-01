@@ -1,13 +1,11 @@
 import ConfigParser
-
-from fflib.espn.dao import EspnDao
+from espn.dao import EspnDao
 
 
 def config():
     parser = ConfigParser.RawConfigParser()
     parser.read('../config.ini')
     return parser
-
 
 class League(object):
     def __init__(self, platform):
