@@ -4,21 +4,6 @@ from bs4 import BeautifulSoup
 
 class EspnDao(object):
 
-    ESPN_PREFIX = 'http://games.espn.go.com/ffl/'
-    STANDINGS_URL = '{0}standings?leagueId={1}&seasonId={2}'
-    SCOREBOARD_URL = '{0}scoreboard?leagueId={1}&seasonId={2}'
-    ROSTER_URL = '{0}clubhouse?leagueId={1}&teamId={2}&seasonId={3}'
-    FA_URL = '{0}freeagency?leagueId={1}&teamId={2}'
-    SCORING_URL = '{0}eaders?leagueId={1}&teamId={2}&scoringPeriodId={3}'
-    WAIVER_URL = '{0}tools/waiverorder?leagueId={1}'
-    TRANSACTIONS_URL = '{0}tools/transactioncounter?leagueId={1}'
-    SETTINGS_URL = '{0}leaguesetup/settings?leagueId={1}'
-
-    EAST_STANDINGS_ID = 2
-    WEST_STANDINGS_ID = 3
-    EAST_DETAIL_ID = 4
-    WEST_DETAIL_ID = 5
-
     def __init__(self, config):
         self.config = dict(config.items('espn'))
         self.league = self.config.get('user.league')
@@ -29,8 +14,12 @@ class EspnDao(object):
         return mechanize.Browser()
 
     def standings(self):
-        tables = self.standings_html()
-        print tables
+        EAST_STANDINGS_ID = 2
+        WEST_STANDINGS_ID = 3
+
+        html = self.standings_html()
+        soup = BeautifulSoup(html)
+        soup.get(tablw)
         divisions = {
             "east": tables[self.EAST_STANDINGS_ID],
             "west": tables[self.WEST_STANDINGS_ID]
@@ -38,6 +27,9 @@ class EspnDao(object):
         return divisions
 
     def standings_detail(self):
+        EAST_DETAIL_ID = 4
+        WEST_DETAIL_ID = 5
+
         tables = self.standings_tables_html()
         print tables
         """
@@ -52,32 +44,43 @@ class EspnDao(object):
         """
 
     def standings_html(self):
-        url = self.STANDINGS_URL.format(self.ESPN_PREFIX, self.league, self.season)
+        url = UrlConstants.STANDINGS_URL.format(self.league, self.season)
         return self.get_html(url)
 
     def standings_detail_html(self):
-        url = self.STANDINGS_URL.format(self.ESPN_PREFIX, self.league, self.season)
+        url = self.STANDINGS_URL.format(self.league, self.season)
         return self.get_html(url)
 
     def roster_html(self, team):
-        url = self.ROSTER_URL.format(self.ESPN_PREFIX, team, self.season)
+        url = self.ROSTER_URL.format(team, self.season)
         return self.get_html(url)
 
     def free_agent_html(self, team):
-        url = self.FA_URL.format(self.ESPN_PREFIX, team)
+        url = self.FA_URL.format(team)
         return self.get_html(url)
 
     def transaction_html(self):
-        url = self.TRANSACTIONS_URL.format(self.ESPN_PREFIX, self.league)
+        url = self.TRANSACTIONS_URL.format(self.league)
         return self.get_html(url)
 
     def settings_html(self):
-        url = self.TRANSACTIONS_URL.format(self.ESPN_PREFIX, self.league)
+        url = self.TRANSACTIONS_URL.format(self.league)
         return self.get_html(url)
 
     def get_html(self, url):
         self.browser.open(url)
         return self.browser.response().read()
+
+
+class UrlConstants:
+    STANDINGS_URL = 'http://games.espn.go.com/ffl/standings?leagueId={0}&seasonId={1}'
+    SCOREBOARD_URL = 'http://games.espn.go.com/ffl/scoreboard?leagueId={0}&seasonId={1}'
+    ROSTER_URL = 'http://games.espn.go.com/ffl/clubhouse?leagueId={0}&teamId={1}&seasonId={2}'
+    FA_URL = 'http://games.espn.go.com/ffl/freeagency?leagueId={0}&teamId={1}'
+    SCORING_URL = 'http://games.espn.go.com/ffl/}eaders?leagueId={0}&teamId={1}&scoringPeriodId={2}'
+    WAIVER_URL = 'http://games.espn.go.com/ffl/tools/waiverorder?leagueId={0}'
+    TRANSACTIONS_URL = 'http://games.espn.go.com/ffl/tools/transactioncounter?leagueId={0}'
+    SETTINGS_URL = 'http://games.espn.go.com/ffl/leaguesetup/settings?leagueId={0}'
 
 
 class Parser(object):
