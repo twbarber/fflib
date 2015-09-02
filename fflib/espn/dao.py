@@ -1,5 +1,6 @@
 import mechanize
 from bs4 import BeautifulSoup
+from fflib.common.table import StandingsTable
 
 
 class EspnDao(object):
@@ -14,16 +15,20 @@ class EspnDao(object):
         return mechanize.Browser()
 
     def standings(self):
+
         EAST_STANDINGS_ID = 2
         WEST_STANDINGS_ID = 3
 
         html = self.standings_html()
-        soup = BeautifulSoup(html)
-        soup.get(tablw)
+        soup = BeautifulSoup(html, "html.parser")
+        tables = soup.findAll("table")
         divisions = {
-            "east": tables[self.EAST_STANDINGS_ID],
-            "west": tables[self.WEST_STANDINGS_ID]
+            "east": tables[EAST_STANDINGS_ID],
+            "west": tables[WEST_STANDINGS_ID]
         }
+        test = StandingsTable(False)
+        test.standings(divisions["west"])
+        print test
         return divisions
 
     def standings_detail(self):
@@ -81,16 +86,3 @@ class UrlConstants:
     WAIVER_URL = 'http://games.espn.go.com/ffl/tools/waiverorder?leagueId={0}'
     TRANSACTIONS_URL = 'http://games.espn.go.com/ffl/tools/transactioncounter?leagueId={0}'
     SETTINGS_URL = 'http://games.espn.go.com/ffl/leaguesetup/settings?leagueId={0}'
-
-
-class Parser(object):
-
-    @staticmethod
-    def parse_rows(table):
-        rows = table.findAll('tr')
-        data = []
-        for row in rows:
-            cols = row.findAll('td')
-            cols = [ele.text.strip() for ele in cols]
-            data.append([ele for ele in cols if ele])
-        return data

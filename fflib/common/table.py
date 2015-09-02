@@ -12,6 +12,7 @@ class Table(object):
 
 
 class StandingsTable(object):
+
     def __init__(self):
         self.hide = False
 
@@ -38,6 +39,17 @@ class StandingsTable(object):
         if self.hide:
             entry.name = 'Team ' + str(i)
         return entry
+
+    @staticmethod
+    def parse_rows(table):
+        rows = table.findAll('tr')
+        data = []
+        for row in rows:
+            cols = row.findAll('td')
+            cols = [ele.text.strip() for ele in cols]
+            data.append([ele for ele in cols if ele])
+        return data
+
 
 
 class Entry(object):
