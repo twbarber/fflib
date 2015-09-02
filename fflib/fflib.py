@@ -15,8 +15,8 @@ class League(object):
             self.dao = EspnDao(self.config)
 
     def standings(self):
-        html = self.dao.standings()
-        table = Table()
+        tables = self.dao.standings()
+        return tables
 
     def detail_standings(self):
         html = self.dao.standings()

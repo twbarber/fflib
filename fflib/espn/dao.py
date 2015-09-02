@@ -27,9 +27,9 @@ class EspnDao(object):
             "west": tables[WEST_STANDINGS_ID]
         }
         test = StandingsTable(False)
-        test.standings(divisions["west"])
-        print test
-        return divisions
+        standings = test.standings(divisions["west"])
+        print(str(test))
+        return standings
 
     def standings_detail(self):
         EAST_DETAIL_ID = 4

@@ -2,6 +2,7 @@ __author__ = 'Tyler'
 
 
 class Table(object):
+
     def __init__(self, title, columns):
         self.title = title
         self.columns = columns
@@ -51,8 +52,8 @@ class StandingsTable(object):
         return data
 
 
+class StandingsEntry(object):
 
-class Entry(object):
     def __init__(self, name, win, loss, tie, pct, gb):
         self.name = name
         self.win = win
