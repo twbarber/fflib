@@ -22,14 +22,13 @@ class EspnDao(object):
         html = self.standings_html()
         soup = BeautifulSoup(html, "html.parser")
         tables = soup.findAll("table")
-        divisions = {
-            "east": tables[EAST_STANDINGS_ID],
-            "west": tables[WEST_STANDINGS_ID]
-        }
-        test = StandingsTable(False)
-        standings = test.standings(divisions["west"])
-        print(str(test))
-        return standings
+        east = tables[EAST_STANDINGS_ID]
+        west = tables[WEST_STANDINGS_ID]
+        tab = StandingsTable(False)
+        standings_map = {}
+        standings_map["west"] = tab.standings(west)
+        standings_map["east"] = tab.standings(east)
+        return standings_map
 
     def standings_detail(self):
         EAST_DETAIL_ID = 4
