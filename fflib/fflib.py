@@ -14,13 +14,14 @@ class League(object):
             self.config = config()
             self.dao = EspnDao(self.config)
 
-    def standings(self):
-        tables = self.dao.standings()
+    def standings(self, division):
+        tables = self.dao.standings(division)
         return tables
 
     def detail_standings(self):
         html = self.dao.standings()
         table = Table(True)
 
-    def settings(self):
-        return
+    def roster(self):
+        tables = self.dao.roster()
+        return tables

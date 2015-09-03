@@ -36,39 +36,37 @@ class EspnDao(object):
 
         tables = self.standings_tables_html()
         print tables
-        """
-        division_html = {
-            "east": tables[self.EAST_DETAIL_ID],
-            "west": tables[self.WEST_DETAIL_ID]
-        }
-        divisions = {}
-        divisions["east"] = self.parse_rows(division_html["east"])
-        divisions["west"] = self.parse_rows(division_html["west"])
-        return divisions
-        """
+
+    def roster(self):
+        ROSTER_ID = 1
+
+        html = self.roster_html("1")
+        soup = BeautifulSoup(html, "html.parser")
+        tables = soup.findAll("table")
+        print(soup.prettify(html))
 
     def standings_html(self):
         url = UrlConstants.STANDINGS_URL.format(self.league, self.season)
         return self.get_html(url)
 
     def standings_detail_html(self):
-        url = self.STANDINGS_URL.format(self.league, self.season)
+        url = UrlConstants.STANDINGS_URL.format(self.league, self.season)
         return self.get_html(url)
 
     def roster_html(self, team):
-        url = self.ROSTER_URL.format(team, self.season)
+        url = UrlConstants.ROSTER_URL.format(self.league, team, self.season)
         return self.get_html(url)
 
     def free_agent_html(self, team):
-        url = self.FA_URL.format(team)
+        url = UrlConstants.FA_URL.format(team)
         return self.get_html(url)
 
     def transaction_html(self):
-        url = self.TRANSACTIONS_URL.format(self.league)
+        url = UrlConstants.TRANSACTIONS_URL.format(self.league)
         return self.get_html(url)
 
     def settings_html(self):
-        url = self.TRANSACTIONS_URL.format(self.league)
+        url = UrlConstants.TRANSACTIONS_URL.format(self.league)
         return self.get_html(url)
 
     def get_html(self, url):

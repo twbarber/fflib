@@ -9,10 +9,16 @@ Tests for `fflib` module.
 """
 from fflib import fflib
 
+"""
 league = fflib.League('ESPN')
 standings_map = league.standings()
 print(standings_map["east"].rows)
 print(standings_map["west"].rows)
+"""
+league = fflib.League('ESPN')
+standings_map = league.roster()
+print(standings_map)
+
 
 """
 table = PrettyTable(standings_w.columns)

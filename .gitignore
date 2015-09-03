@@ -46,3 +46,4 @@ docs/_build
 config.ini
 .idea/**
 .idea/*/*
+.idea/dictionaries
