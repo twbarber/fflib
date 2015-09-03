@@ -1,6 +1,6 @@
 import mechanize
 from bs4 import BeautifulSoup
-from fflib.common.table import StandingsTable
+from fflib.common.table import StandingsTable, RosterTable
 
 
 class EspnDao(object):
@@ -43,7 +43,10 @@ class EspnDao(object):
         html = self.roster_html("1")
         soup = BeautifulSoup(html, "html.parser")
         tables = soup.findAll("table")
-        print(soup.prettify(html))
+        roster = tables[3]
+        tab = RosterTable()
+        roster_map = {}
+        roster_map["test"] = tab.roster(roster)
 
     def standings_html(self):
         url = UrlConstants.STANDINGS_URL.format(self.league, self.season)

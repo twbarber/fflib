@@ -52,6 +52,42 @@ class StandingsTable(object):
         return data
 
 
+class RosterTable(object):
+    def __init__(self):
+        return
+
+    def roster(self, table):
+        data = self.parse_rows(table)
+        starters = data[2:11]
+        bench = data[13:20]
+        full = starters + bench
+        roster_table = Table('Roster', data[1])
+        for i, team in enumerate(full, start=1):
+            entry = RosterEntry(*team)
+            roster_table.add_row(i, entry)
+        print(roster_table.rows)
+        return roster_table
+
+    def detail(self, table):
+        data = self.parse_rows(table)
+        standings_detail = Table(data[0], data[1])
+        for i, team in enumerate(data[2:10], start=1):
+            entry = DetailStandingsEntry(*team)
+            standings_detail.add_row(i, e)
+        return standings_detail
+
+    @staticmethod
+    def parse_rows(table):
+        rows = table.findAll('tr')
+        data = []
+        for row in rows:
+            cols = row.findAll('td')
+            cols = [ele.text.strip() for ele in cols]
+            data.append([ele for ele in cols if ele])
+        return data
+
+
+
 class StandingsEntry(object):
 
     def __init__(self, name, win, loss, tie, pct, gb):
@@ -83,6 +119,53 @@ class StandingsEntry(object):
             self.gb
         ]
         return values
+
+
+class RosterEntry(object):
+    def __init__(self, slot, player_team_pos, opp, status, prk, pts, avg, last, proj, oprk, start, own, add):
+        self.slot = slot.encode('utf-8').strip()
+        self.player_team_pos = player_team_pos.encode('utf-8').strip()
+        self.opp = opp.encode('utf-8').strip()
+        self.status = status.encode('utf-8').strip()
+        self.prk = prk.encode('utf-8').strip()
+        self.pts = pts.encode('utf-8').strip()
+        self.avg = avg.encode('utf-8').strip()
+        self.last = last.encode('utf-8').strip()
+        self.proj = proj.encode('utf-8').strip()
+        self.oprk = oprk.encode('utf-8').strip()
+        self.start = start.encode('utf-8').strip()
+        self.own = own.encode('utf-8').strip()
+        self.add = add.encode('utf-8').strip()
+
+    def __repr__(self):
+        string = (
+            'Slot:\t' + self.slot + '\n' +
+            'Player:\t' + self.player_team_pos + '\n' +
+            'Opponent:\t' + self.opp + '\n' +
+            'Status:\t' + self.status + '\n' +
+            'Prk:\t' + self.prk + '\n' +
+            'Pts:\t' + self.pts + '\n' +
+            'Avg:\t' + self.avg + '\n' +
+            'Last:\t' + self.last + '\n' +
+            'Proj:\t' + self.proj + '\n' +
+            'Oprk:\t' + self.oprk + '\n' +
+            'Start:\t' + self.start + '\n' +
+            'Own:\t' + self.own + '\n' +
+            'Add/Drop:\t' + self.add
+        )
+        return string
+
+    def values(self):
+        values = [
+            self.name,
+            self.win,
+            self.loss,
+            self.tie,
+            self.pct,
+            self.gb
+        ]
+        return values
+
 
 
 class DetailStandingsEntry(object):
