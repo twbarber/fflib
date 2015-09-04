@@ -1,6 +1,15 @@
 __author__ = 'Tyler'
 
 
+def parse_rows(table):
+    rows = table.findAll('tr')
+    data = []
+    for row in rows:
+        cols = row.findAll('td')
+        cols = [ele.text.strip() for ele in cols]
+        data.append([ele for ele in cols if ele])
+    return data
+
 class Table(object):
 
     def __init__(self, title, columns):
@@ -21,15 +30,28 @@ class StandingsTable(object):
         self.hide = hide
 
     def standings(self, table):
-        data = self.parse_rows(table)
+        data = parse_rows(table)
         standings = Table(data[0], data[1])
         for i, team in enumerate(data[2:8], start=1):
             entry = StandingsEntry(*team)
             standings.add_row(i, self.anonymize(i, entry))
         return standings
 
+    def anonymize(self, i, entry):
+        if self.hide:
+            entry.name = 'Team ' + str(i)
+        return entry
+
+
+class StandingsDetailTable(object):
+    def __init__(self):
+        self.hide = False
+
+    def __init__(self, hide):
+        self.hide = hide
+
     def detail(self, table):
-        data = self.parse_rows(table)
+        data = parse_rows(table)
         standings_detail = Table(data[0], data[1])
         for i, team in enumerate(data[2:10], start=1):
             entry = DetailStandingsEntry(*team)
@@ -41,23 +63,13 @@ class StandingsTable(object):
             entry.name = 'Team ' + str(i)
         return entry
 
-    @staticmethod
-    def parse_rows(table):
-        rows = table.findAll('tr')
-        data = []
-        for row in rows:
-            cols = row.findAll('td')
-            cols = [ele.text.strip() for ele in cols]
-            data.append([ele for ele in cols if ele])
-        return data
-
 
 class RosterTable(object):
     def __init__(self):
         return
 
     def roster(self, table):
-        data = self.parse_rows(table)
+        data = parse_rows(table)
         starters = data[2:11]
         bench = data[13:20]
         full = starters + bench
@@ -77,7 +89,6 @@ class RosterTable(object):
             cols = [ele.text.strip() for ele in cols]
             data.append([ele for ele in cols if ele])
         return data
-
 
 
 class StandingsEntry(object):
