@@ -77,7 +77,6 @@ class RosterTable(object):
         for i, team in enumerate(full, start=1):
             entry = RosterEntry(*team)
             roster_table.add_row(i, entry)
-        print(roster_table.rows)
         return roster_table
 
 

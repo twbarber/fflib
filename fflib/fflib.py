@@ -8,6 +8,7 @@ def config():
     return parser
 
 class League(object):
+
     def __init__(self, platform):
         if platform in ['ESPN']:
             self.platform = 'ESPN'
@@ -19,8 +20,8 @@ class League(object):
         return tables
 
     def detail_standings(self):
-        html = self.dao.standings()
-        table = Table(True)
+        tables = self.dao.standings()
+        return tables
 
     def roster(self):
         tables = self.dao.roster()

@@ -31,11 +31,20 @@ class EspnDao(object):
         return standings_map
 
     def standings_detail(self):
+
         EAST_DETAIL_ID = 4
         WEST_DETAIL_ID = 5
 
-        tables = self.standings_tables_html()
-        print tables
+        html = self.standings_html()
+        soup = BeautifulSoup(html, "html.parser")
+        tables = soup.findAll("table")
+        east = tables[EAST_STANDINGS_ID]
+        west = tables[WEST_STANDINGS_ID]
+        tab = StandingsTable(False)
+        standings_map = {}
+        standings_map["west"] = tab.standings(west)
+        standings_map["east"] = tab.standings(east)
+        return standings_map
 
     def roster(self):
         ROSTER_ID = 1
@@ -46,7 +55,8 @@ class EspnDao(object):
         roster = tables[3]
         tab = RosterTable()
         roster_map = {}
-        roster_map["test"] = tab.roster(roster)
+        roster_map["roster"] = tab.roster(roster)
+        return roster_map
 
     def standings_html(self):
         url = UrlConstants.STANDINGS_URL.format(self.league, self.season)
