@@ -68,14 +68,6 @@ class RosterTable(object):
         print(roster_table.rows)
         return roster_table
 
-    def detail(self, table):
-        data = self.parse_rows(table)
-        standings_detail = Table(data[0], data[1])
-        for i, team in enumerate(data[2:10], start=1):
-            entry = DetailStandingsEntry(*team)
-            standings_detail.add_row(i, e)
-        return standings_detail
-
     @staticmethod
     def parse_rows(table):
         rows = table.findAll('tr')
@@ -122,6 +114,7 @@ class StandingsEntry(object):
 
 
 class RosterEntry(object):
+
     def __init__(self, slot, player_team_pos, opp, status, prk, pts, avg, last, proj, oprk, start, own, add):
         self.slot = slot.encode('utf-8').strip()
         self.player_team_pos = player_team_pos.encode('utf-8').strip()
@@ -157,12 +150,19 @@ class RosterEntry(object):
 
     def values(self):
         values = [
-            self.name,
-            self.win,
-            self.loss,
-            self.tie,
-            self.pct,
-            self.gb
+            self.slot,
+            self.player_team_pos,
+            self.opp,
+            self.status,
+            self.prk,
+            self.pts,
+            self.avg,
+            self.last,
+            self.proj,
+            self.oprk,
+            self.start,
+            self.own,
+            self.add
         ]
         return values
 
