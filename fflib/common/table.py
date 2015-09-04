@@ -80,16 +80,6 @@ class RosterTable(object):
         print(roster_table.rows)
         return roster_table
 
-    @staticmethod
-    def parse_rows(table):
-        rows = table.findAll('tr')
-        data = []
-        for row in rows:
-            cols = row.findAll('td')
-            cols = [ele.text.strip() for ele in cols]
-            data.append([ele for ele in cols if ele])
-        return data
-
 
 class StandingsEntry(object):
 
