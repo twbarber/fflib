@@ -21,12 +21,13 @@ class Table(object):
         self.rows[row] = values
 
 
-class StandingsTable(object):
-
-    def __init__(self):
+class StandingsTable(Table):
+    def __init__(self, title, columns):
+        Table.__init__(self, title, columns)
         self.hide = False
 
-    def __init__(self, hide):
+    def __init__(self, title, columns, hide):
+        Table.__init__(self, title, columns)
         self.hide = hide
 
     def standings(self, table):
@@ -44,6 +45,7 @@ class StandingsTable(object):
 
 
 class StandingsDetailTable(object):
+
     def __init__(self):
         self.hide = False
 
@@ -64,9 +66,10 @@ class StandingsDetailTable(object):
         return entry
 
 
-class RosterTable(object):
-    def __init__(self):
-        return
+class RosterTable(Table):
+    def __init__(self, title, columns, data):
+        Table.__init__(self, title, columns)
+        self.add_row()
 
     def roster(self, table):
         data = parse_rows(table)

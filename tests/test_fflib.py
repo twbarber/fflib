@@ -16,9 +16,9 @@ print(standings_map["east"].rows)
 print(standings_map["west"].rows)
 """
 league = fflib.League('ESPN')
-standings_map = league.roster()
-print(standings_map)
-
+standings_map = league.rosters()
+print(standings_map["east"].rows)
+print(standings_map["west"].rows)
 
 """
 table = PrettyTable(standings_w.columns)

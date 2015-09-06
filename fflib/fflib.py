@@ -23,6 +23,10 @@ class League(object):
         tables = self.dao.standings()
         return tables
 
-    def roster(self):
-        tables = self.dao.roster()
+    def rosters(self):
+        tables = self.dao.rosters()
+        return tables
+
+    def roster(self, team):
+        tables = self.dao.roster(team)
         return tables
