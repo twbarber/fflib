@@ -67,21 +67,27 @@ class StandingsDetailTable(object):
 
 
 class RosterTable(Table):
-    def __init__(self, data):
-        roster = self.populate(data)
-        Table.__init__(self, 'Roster', roster[1])
+    def __init__(self, html):
+        parsed_html = self.parse_html(html)
+        columns = parsed_html[1]
+        data = parsed_html[2:(len(parsed_html))]
+        Table.__init__(self, 'Roster', columns)
+        self.populate(data)
 
     def populate(self, data):
-        body = parse_rows(data)
-        print(body)
-        starters = body[2:11]
-        bench = body[13:20]
+        starters = data[0:9]
+        bench = data[10:len(data)]
         full = starters + bench
         roster = {}
         for i, team in enumerate(full, start=1):
             entry = RosterEntry(*team)
-            roster[i] = entry
+            self.add_row(i, entry)
         return roster
+
+    def parse_html(self, html):
+        data = parse_rows(html)
+        return data
+
 
 
 class StandingsEntry(object):
