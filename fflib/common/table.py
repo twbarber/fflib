@@ -67,20 +67,21 @@ class StandingsDetailTable(object):
 
 
 class RosterTable(Table):
-    def __init__(self, title, columns, data):
-        Table.__init__(self, title, columns)
-        self.add_row()
+    def __init__(self, data):
+        roster = self.populate(data)
+        Table.__init__(self, 'Roster', roster[1])
 
-    def roster(self, table):
-        data = parse_rows(table)
-        starters = data[2:11]
-        bench = data[13:20]
+    def populate(self, data):
+        body = parse_rows(data)
+        print(body)
+        starters = body[2:11]
+        bench = body[13:20]
         full = starters + bench
-        roster_table = Table('Roster', data[1])
+        roster = {}
         for i, team in enumerate(full, start=1):
             entry = RosterEntry(*team)
-            roster_table.add_row(i, entry)
-        return roster_table
+            roster[i] = entry
+        return roster
 
 
 class StandingsEntry(object):

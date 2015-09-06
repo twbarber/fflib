@@ -43,6 +43,7 @@ def get_html(url):
 
 
 class UrlConstants:
+
     STANDINGS_URL = 'http://games.espn.go.com/ffl/standings?leagueId={0}&seasonId={1}'
     SCOREBOARD_URL = 'http://games.espn.go.com/ffl/scoreboard?leagueId={0}&seasonId={1}'
     ROSTER_URL = 'http://games.espn.go.com/ffl/clubhouse?leagueId={0}&teamId={1}&seasonId={2}'
@@ -55,7 +56,6 @@ class UrlConstants:
 
 ROSTER_URL = 'http://games.espn.go.com/ffl/clubhouse?leagueId={0}&teamId={1}&seasonId={2}'
 
-only_tags_with_id_link2 = SoupStrainer(id=re.compile('playertable_'))
+only_tags_with_id_link2 = SoupStrainer(id=re.compile("playertable_"))
 
-html = roster_html("1")
-BeautifulSoup(html, "html.parser", parse_only=only_tags_with_id_link2).prettify())
+html = roster_html("())
