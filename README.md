@@ -27,6 +27,13 @@ dropdown. Afterwards, you'll be able to access league data using this library.
 - Pull Matchup Information per Matchup
 - Pull Leage Scoring Settings
 
+## Config Example
+
+    [espn]
+    
+    user.league = 574839
+    user.season = 2015
+
 ## Display Text Based Tables
 
     +--------+---+---+---+------+----+
