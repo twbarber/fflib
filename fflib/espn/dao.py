@@ -48,25 +48,18 @@ class EspnDao(object):
         return standings_map
 
     def roster(self, team):
-
-        ROSTER_ID = 1
-
-        html = self.roster_html("1")
+        html = self.roster_html(team)
         soup = BeautifulSoup(html, "html.parser")
-        roster = soup.find("table", id=re.compile('playertable_'))
-        print(roster)
-        tab = RosterTable()
-        roster_map = {}
-        roster_map["roster"] = tab.roster(roster)
-        return roster_map
+        roster_html = soup.find("table", id=re.compile('playertable_'))
+        roster_table = RosterTable(roster_html)
+        return roster_table
 
     def rosters(self):
-
-        html = self.roster_html("1")
-        soup = BeautifulSoup(html, "html.parser")
-        table_html = soup.find("table", id=re.compile('playertable_'))
-        roster = RosterTable(table_html)
-        return roster
+        x = 1
+        rosters = {}
+        while x <= 12:
+            roster[x] = self.roster(x)
+        return rosters
 
     def standings_html(self):
         url = UrlConstants.STANDINGS_URL.format(self.league, self.season)
