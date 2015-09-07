@@ -20,6 +20,9 @@ class Table(object):
     def add_row(self, row, values):
         self.rows[row] = values
 
+    def parse_html(self, html):
+        data = parse_rows(html)
+        return data
 
 class StandingsTable(Table):
     def __init__(self, title, columns):
@@ -84,10 +87,22 @@ class RosterTable(Table):
             self.add_row(i, entry)
         return roster
 
-    def parse_html(self, html):
-        data = parse_rows(html)
-        return data
 
+class BasicSettingsTable(Table):
+    def __init__(self, basic_html, team_html):
+        Table.__init__(self, 'BasicSettings', ['Key', 'Value'])
+        self.add_setting(basic_html)
+        self.add_setting(team_html)
+
+    def basic_settings(self, html):
+        parsed_html = self.parse_html(html)
+        print(parsed_html)
+        print("\n")
+
+    def division_settings(self, html):
+        parsed_html = self.parse_html(html)
+        print(parsed_html)
+        print("\n")
 
 
 class StandingsEntry(object):

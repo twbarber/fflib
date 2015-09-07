@@ -1,7 +1,7 @@
 import mechanize
 import re
 from bs4 import BeautifulSoup
-from fflib.common.table import StandingsTable, RosterTable
+from fflib.common.table import StandingsTable, RosterTable, BasicSettingsTable
 
 
 class EspnDao(object):
@@ -11,6 +11,7 @@ class EspnDao(object):
         self.league = self.config.get('user.league')
         self.season = self.config.get('user.season')
         self.browser = self.connect()
+        self.basic_settings()
 
     def connect(self):
         return mechanize.Browser()
@@ -61,6 +62,20 @@ class EspnDao(object):
             roster[x] = self.roster(x)
         return rosters
 
+    def basic_settings(self):
+        html = self.settings_html()
+        soup = BeautifulSoup(html, "html.parser")
+        basic_html = soup.find("div", {"name": re.compile("basic")})
+        print(basic_html)
+        team_html = soup.find("div", {"name": re.compile("info")})
+        print("\n")
+        print(team_html)
+        print("\n")
+        table = BasicSettingsTable(basic_html, team_html)
+
+        table
+        settings
+
     def standings_html(self):
         url = UrlConstants.STANDINGS_URL.format(self.league, self.season)
         return self.get_html(url)
@@ -82,7 +97,7 @@ class EspnDao(object):
         return self.get_html(url)
 
     def settings_html(self):
-        url = UrlConstants.TRANSACTIONS_URL.format(self.league)
+        url = UrlConstants.SETTINGS_URL.format(self.league)
         return self.get_html(url)
 
     def get_html(self, url):
