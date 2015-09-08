@@ -10,6 +10,18 @@ def parse_rows(table):
         data.append([ele for ele in cols if ele])
     return data
 
+
+def parse_rows_special(table):
+    rows = table.findAll('td')
+    print(rows)
+    data = []
+    for row in rows:
+        data.append([ele.text.strip() for ele in rows])
+    data_map = {}
+    data_map[data[0][1]]
+    print(data[2])
+    return data
+
 class Table(object):
 
     def __init__(self, title, columns):
@@ -91,18 +103,16 @@ class RosterTable(Table):
 class BasicSettingsTable(Table):
     def __init__(self, basic_html, team_html):
         Table.__init__(self, 'BasicSettings', ['Key', 'Value'])
-        self.add_setting(basic_html)
-        self.add_setting(team_html)
+        self.basic_settings(basic_html)
+        self.division_settings(team_html)
 
     def basic_settings(self, html):
         parsed_html = self.parse_html(html)
-        print(parsed_html)
-        print("\n")
+        self.league = parsed_html[1][1]
+        self.teams = parsed_html[2][1]
 
     def division_settings(self, html):
-        parsed_html = self.parse_html(html)
-        print(parsed_html)
-        print("\n")
+        parsed_html = parse_rows_special(html)
 
 
 class StandingsEntry(object):

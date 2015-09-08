@@ -58,4 +58,3 @@ ROSTER_URL = 'http://games.espn.go.com/ffl/clubhouse?leagueId={0}&teamId={1}&sea
 
 only_tags_with_id_link2 = SoupStrainer(id=re.compile("playertable_"))
 
-html = roster_html("())

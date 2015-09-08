@@ -65,16 +65,9 @@ class EspnDao(object):
     def basic_settings(self):
         html = self.settings_html()
         soup = BeautifulSoup(html, "html.parser")
-        basic_html = soup.find("div", {"name": re.compile("basic")})
-        print(basic_html)
-        team_html = soup.find("div", {"name": re.compile("info")})
-        print("\n")
-        print(team_html)
-        print("\n")
+        basic_html = soup.find("div", {"name": re.compile("basic")}).find("table")
+        team_html = soup.find("div", {"name": re.compile("info")}).find("table")
         table = BasicSettingsTable(basic_html, team_html)
-
-        table
-        settings
 
     def standings_html(self):
         url = UrlConstants.STANDINGS_URL.format(self.league, self.season)
