@@ -59,7 +59,8 @@ class EspnDao(object):
         x = 1
         rosters = {}
         while x <= 12:
-            roster[x] = self.roster(x)
+            rosters[x] = self.roster(x)
+            x += 1
         return rosters
 
     def basic_settings(self):

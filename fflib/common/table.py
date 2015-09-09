@@ -1,4 +1,5 @@
 __author__ = 'Tyler'
+import re
 
 
 def parse_rows(table):
@@ -11,15 +12,16 @@ def parse_rows(table):
     return data
 
 
-def parse_rows_special(table):
-    rows = table.findAll('td')
-    print(rows)
-    data = []
-    for row in rows:
-        data.append([ele.text.strip() for ele in rows])
-    data_map = {}
-    data_map[data[0][1]]
-    print(data[2])
+def parse_teams(table):
+    divs = table.findAll("tr", {"class": re.compile("row*")})
+    data = {}
+    for div in divs:
+        div_name = div.find("td", {"class": re.compile("settingLabel")}).text.strip()
+        table = div.find("table").findAll("td")
+        team_list = []
+        for team in table:
+            team_list.append(team.text.strip())
+        data[div_name] = team_list
     return data
 
 class Table(object):
@@ -112,7 +114,8 @@ class BasicSettingsTable(Table):
         self.teams = parsed_html[2][1]
 
     def division_settings(self, html):
-        parsed_html = parse_rows_special(html)
+        divisions = parse_teams(html)
+        self.num_divisions = len(divisions.keys())
 
 
 class StandingsEntry(object):
