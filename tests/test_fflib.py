@@ -16,7 +16,7 @@ print(standings_map["east"].rows)
 print(standings_map["west"].rows)
 """
 league = fflib.League('ESPN')
-standings_map = league.detail_standings()
+standings_map = league.rosters()
 print(standings_map)
 
 """

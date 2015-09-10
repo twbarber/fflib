@@ -1,7 +1,7 @@
 import mechanize
 import re
 from bs4 import BeautifulSoup
-from fflib.common.table import StandingsTable, RosterTable, BasicSettingsTable
+from fflib.common.table import StandingsTable, StandingsDetailTable, RosterTable, BasicSettingsTable
 
 
 class EspnDao(object):
@@ -21,28 +21,19 @@ class EspnDao(object):
         html = self.standings_html()
         soup = BeautifulSoup(html, "html.parser")
         tables = soup.findAll("table", {"class": "tableBody"})
-        east = tables[0]
-        print east
-        west = tables[1]
-        tab = StandingsTable(False)
         standings_map = {}
-        standings_map["west"] = tab.standings(west)
-        standings_map["east"] = tab.standings(east)
+        standings_map["east"] = StandingsTable(tables[0])
+        standings_map["west"] = StandingsTable(tables[1])
         return standings_map
 
     def standings_detail(self):
 
         html = self.standings_html()
         soup = BeautifulSoup(html, "html.parser")
-        print (soup.prettify("utf-8"))
-        tables = soup.findAll("table")
-
-        div_1 = tables[EAST_STANDINGS_ID]
-        div_2 = tables[WEST_STANDINGS_ID]
-        tab = StandingsTable(False)
+        tables = soup.findAll("table", {"class": "tableBody"})
         standings_map = {}
-        standings_map["west"] = tab.standings(west)
-        standings_map["east"] = tab.standings(east)
+        standings_map["east"] = StandingsDetailTable(tables[2])
+        standings_map["west"] = StandingsDetailTable(tables[3])
         return standings_map
 
     def roster(self, team):

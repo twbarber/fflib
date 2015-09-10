@@ -25,45 +25,40 @@ class Table(object):
         return data
 
 class StandingsTable(Table):
+
     def __init__(self, html):
+        parsed_html = self.parse_html(html)
+        self.division = parsed_html[0]
+        columns = parsed_html[1]
+        data = parsed_html[2:(len(parsed_html))]
+        Table.__init__(self, 'Standings', columns)
+        self.standings(data)
 
-        Table.__init__(self, title, columns)
-        self.hide = False
+    def __repr__(self):
+        return str(self.rows)
 
-    def standings(self, table):
-        data = self.parse_rows(table)
-        standings = Table(data[0], data[1])
-        for i, team in enumerate(data[2:8], start=1):
+    def standings(self, data):
+        for team in data:
             entry = StandingsEntry(*team)
-            standings.add_row(self.anonymize(i, entry))
-        return standings
-
-    def anonymize(self, i, entry):
-        if self.hide:
-            entry.name = 'Team ' + str(i)
-        return entry
+            self.add_row(entry)
 
 
-class StandingsDetailTable(object):
+class StandingsDetailTable(Table):
+    def __init__(self, html):
+        parsed_html = self.parse_html(html)
+        self.division = parsed_html[0]
+        columns = parsed_html[1]
+        data = parsed_html[2:(len(parsed_html))]
+        Table.__init__(self, 'Standings Detail', columns)
+        self.detail(data)
 
-    def __init__(self):
-        self.hide = False
+    def __repr__(self):
+        return str(self.rows)
 
-    def __init__(self, hide):
-        self.hide = hide
-
-    def detail(self, table):
-        data = self.parse_rows(table)
-        standings_detail = Table(data[0], data[1])
-        for i, team in enumerate(data[2:10], start=1):
+    def detail(self, data):
+        for team in data:
             entry = DetailStandingsEntry(*team)
-            standings_detail.add_row(self.anonymize(i, entry))
-        return standings_detail
-
-    def anonymize(self, i, entry):
-        if self.hide:
-            entry.name = 'Team ' + str(i)
-        return entry
+            self.add_row(entry)
 
 
 class RosterTable(Table):
