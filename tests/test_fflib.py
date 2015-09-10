@@ -17,7 +17,7 @@ print(standings_map["west"].rows)
 """
 league = fflib.League('ESPN')
 standings_map = league.rosters()
-print(standings_map.rows)
+print(standings_map)
 
 """
 table = PrettyTable(standings_w.columns)

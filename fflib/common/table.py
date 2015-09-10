@@ -29,10 +29,10 @@ class Table(object):
     def __init__(self, title, columns):
         self.title = title
         self.columns = columns
-        self.rows = {}
+        self.rows = []
 
-    def add_row(self, row, values):
-        self.rows[row] = values
+    def add_row(self, values):
+        self.rows.append(values)
 
     def parse_html(self, html):
         data = parse_rows(html)
@@ -52,7 +52,7 @@ class StandingsTable(Table):
         standings = Table(data[0], data[1])
         for i, team in enumerate(data[2:8], start=1):
             entry = StandingsEntry(*team)
-            standings.add_row(i, self.anonymize(i, entry))
+            standings.add_row(self.anonymize(i, entry))
         return standings
 
     def anonymize(self, i, entry):
@@ -74,7 +74,7 @@ class StandingsDetailTable(object):
         standings_detail = Table(data[0], data[1])
         for i, team in enumerate(data[2:10], start=1):
             entry = DetailStandingsEntry(*team)
-            standings_detail.add_row(i, self.anonymize(i, entry))
+            standings_detail.add_row(self.anonymize(i, entry))
         return standings_detail
 
     def anonymize(self, i, entry):
@@ -84,6 +84,7 @@ class StandingsDetailTable(object):
 
 
 class RosterTable(Table):
+
     def __init__(self, html):
         parsed_html = self.parse_html(html)
         columns = parsed_html[1]
@@ -91,15 +92,31 @@ class RosterTable(Table):
         Table.__init__(self, 'Roster', columns)
         self.populate(data)
 
+    def __repr__(self):
+        return str(self.rows)
+
+
     def populate(self, data):
         starters = data[0:9]
-        bench = data[10:len(data)]
+        bench = data[11:len(data) - 1]
         full = starters + bench
         roster = {}
         for i, team in enumerate(full, start=1):
+            if len(team) == 12:
+                team = self.scrub_bye(team)
+            elif len(team) == 10:
+                team = self.scrub_empty(team)
             entry = RosterEntry(*team)
-            self.add_row(i, entry)
+            self.add_row(entry)
         return roster
+
+    def scrub_empty(self, team):
+        team.extend(('--', '--', '--'))
+        return team
+
+    def scrub_bye(self, team):
+        team.insert(4, '** BYE **')
+        return team
 
 
 class BasicSettingsTable(Table):
@@ -203,7 +220,6 @@ class RosterEntry(object):
             self.add
         ]
         return values
-
 
 
 class DetailStandingsEntry(object):
