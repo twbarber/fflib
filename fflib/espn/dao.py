@@ -18,14 +18,12 @@ class EspnDao(object):
 
     def standings(self):
 
-        EAST_STANDINGS_ID = 2
-        WEST_STANDINGS_ID = 3
-
         html = self.standings_html()
         soup = BeautifulSoup(html, "html.parser")
-        tables = soup.findAll("table")
-        east = tables[EAST_STANDINGS_ID]
-        west = tables[WEST_STANDINGS_ID]
+        tables = soup.findAll("table", {"class": "tableBody"})
+        east = tables[0]
+        print east
+        west = tables[1]
         tab = StandingsTable(False)
         standings_map = {}
         standings_map["west"] = tab.standings(west)
@@ -34,12 +32,11 @@ class EspnDao(object):
 
     def standings_detail(self):
 
-        EAST_DETAIL_ID = 4
-        div_2_DETAIL_ID = 5
-
         html = self.standings_html()
         soup = BeautifulSoup(html, "html.parser")
+        print (soup.prettify("utf-8"))
         tables = soup.findAll("table")
+
         div_1 = tables[EAST_STANDINGS_ID]
         div_2 = tables[WEST_STANDINGS_ID]
         tab = StandingsTable(False)

@@ -25,13 +25,10 @@ class Table(object):
         return data
 
 class StandingsTable(Table):
-    def __init__(self, title, columns):
+    def __init__(self, html):
+
         Table.__init__(self, title, columns)
         self.hide = False
-
-    def __init__(self, title, columns, hide):
-        Table.__init__(self, title, columns)
-        self.hide = hide
 
     def standings(self, table):
         data = self.parse_rows(table)
