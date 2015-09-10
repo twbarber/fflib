@@ -1,29 +1,6 @@
 __author__ = 'Tyler'
 import re
 
-
-def parse_rows(table):
-    rows = table.findAll('tr')
-    data = []
-    for row in rows:
-        cols = row.findAll('td')
-        cols = [ele.text.strip() for ele in cols]
-        data.append([ele for ele in cols if ele])
-    return data
-
-
-def parse_teams(table):
-    divs = table.findAll("tr", {"class": re.compile("row*")})
-    data = {}
-    for div in divs:
-        div_name = div.find("td", {"class": re.compile("settingLabel")}).text.strip()
-        table = div.find("table").findAll("td")
-        team_list = []
-        for team in table:
-            team_list.append(team.text.strip())
-        data[div_name] = team_list
-    return data
-
 class Table(object):
 
     def __init__(self, title, columns):
@@ -35,7 +12,16 @@ class Table(object):
         self.rows.append(values)
 
     def parse_html(self, html):
-        data = parse_rows(html)
+        data = self.parse_rows(html)
+        return data
+
+    def parse_rows(self, table):
+        rows = table.findAll('tr')
+        data = []
+        for row in rows:
+            cols = row.findAll('td')
+            cols = [ele.text.strip() for ele in cols]
+            data.append([ele for ele in cols if ele])
         return data
 
 class StandingsTable(Table):
@@ -48,7 +34,7 @@ class StandingsTable(Table):
         self.hide = hide
 
     def standings(self, table):
-        data = parse_rows(table)
+        data = self.parse_rows(table)
         standings = Table(data[0], data[1])
         for i, team in enumerate(data[2:8], start=1):
             entry = StandingsEntry(*team)
@@ -70,7 +56,7 @@ class StandingsDetailTable(object):
         self.hide = hide
 
     def detail(self, table):
-        data = parse_rows(table)
+        data = self.parse_rows(table)
         standings_detail = Table(data[0], data[1])
         for i, team in enumerate(data[2:10], start=1):
             entry = DetailStandingsEntry(*team)
@@ -94,7 +80,6 @@ class RosterTable(Table):
 
     def __repr__(self):
         return str(self.rows)
-
 
     def populate(self, data):
         starters = data[0:9]
@@ -131,8 +116,20 @@ class BasicSettingsTable(Table):
         self.teams = parsed_html[2][1]
 
     def division_settings(self, html):
-        divisions = parse_teams(html)
+        divisions = self.parse_divisions(html)
         self.num_divisions = len(divisions.keys())
+
+    def parse_divisions(self, table):
+        divs = table.findAll("tr", {"class": re.compile("row*")})
+        data = {}
+        for div in divs:
+            div_name = div.find("td", {"class": re.compile("settingLabel")}).text.strip()
+            table = div.find("table").findAll("td")
+            team_list = []
+            for team in table:
+                team_list.append(team.text.strip())
+            data[div_name] = team_list
+        return data
 
 
 class StandingsEntry(object):
