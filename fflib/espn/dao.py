@@ -74,10 +74,6 @@ class EspnDao(object):
         url = UrlConstants.FA_URL.format(team)
         return self.get_html(url)
 
-    def transaction_html(self):
-        url = UrlConstants.TRANSACTIONS_URL.format(self.league)
-        return self.get_html(url)
-
     def settings_html(self):
         url = UrlConstants.SETTINGS_URL.format(self.league)
         return self.get_html(url)
@@ -94,5 +90,4 @@ class UrlConstants:
     FA_URL = 'http://games.espn.go.com/ffl/freeagency?leagueId={0}&teamId={1}'
     SCORING_URL = 'http://games.espn.go.com/ffl/}eaders?leagueId={0}&teamId={1}&scoringPeriodId={2}'
     WAIVER_URL = 'http://games.espn.go.com/ffl/tools/waiverorder?leagueId={0}'
-    TRANSACTIONS_URL = 'http://games.espn.go.com/ffl/tools/transactioncounter?leagueId={0}'
     SETTINGS_URL = 'http://games.espn.go.com/ffl/leaguesetup/settings?leagueId={0}'
