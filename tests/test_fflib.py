@@ -16,7 +16,7 @@ print(standings_map["east"].rows)
 print(standings_map["west"].rows)
 """
 league = fflib.League('ESPN')
-standings_map = league.transactions()
+standings_map = league.free_agents()
 print(standings_map)
 
 """

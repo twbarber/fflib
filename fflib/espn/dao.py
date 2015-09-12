@@ -51,6 +51,13 @@ class EspnDao(object):
             x += 1
         return rosters
 
+    def free_agents(self):
+        html = self.free_agent_html()
+        soup = BeautifulSoup(html, "html.parser")
+        free_agent_html = soup.find("table", id=re.compile('playertable_'))
+        free_agent_table = FreeAgentTable(free_agent_html)
+        return free_agent_table
+
     def basic_settings(self):
         html = self.settings_html()
         soup = BeautifulSoup(html, "html.parser")
@@ -70,8 +77,8 @@ class EspnDao(object):
         url = UrlConstants.ROSTER_URL.format(self.league, team, self.season)
         return self.get_html(url)
 
-    def free_agent_html(self, team):
-        url = UrlConstants.FA_URL.format(team)
+    def free_agent_html(self):
+        url = UrlConstants.FA_URL.format(self.league, self.season)
         return self.get_html(url)
 
     def settings_html(self):
@@ -87,7 +94,7 @@ class UrlConstants:
     STANDINGS_URL = 'http://games.espn.go.com/ffl/standings?leagueId={0}&seasonId={1}'
     SCOREBOARD_URL = 'http://games.espn.go.com/ffl/scoreboard?leagueId={0}&seasonId={1}'
     ROSTER_URL = 'http://games.espn.go.com/ffl/clubhouse?leagueId={0}&teamId={1}&seasonId={2}'
-    FA_URL = 'http://games.espn.go.com/ffl/freeagency?leagueId={0}&teamId={1}'
+    FA_URL = 'http://games.espn.go.com/ffl/freeagency?leagueId={0}&seasonId={1}'
     SCORING_URL = 'http://games.espn.go.com/ffl/}eaders?leagueId={0}&teamId={1}&scoringPeriodId={2}'
     WAIVER_URL = 'http://games.espn.go.com/ffl/tools/waiverorder?leagueId={0}'
     SETTINGS_URL = 'http://games.espn.go.com/ffl/leaguesetup/settings?leagueId={0}'

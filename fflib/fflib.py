@@ -1,18 +1,12 @@
 import ConfigParser
 from espn.dao import EspnDao
 
-
-def config():
-    parser = ConfigParser.RawConfigParser()
-    parser.read('../config.ini')
-    return parser
-
 class League(object):
 
     def __init__(self, platform):
         if platform in ['ESPN']:
             self.platform = 'ESPN'
-            self.config = config()
+            self.config = self.config()
             self.dao = EspnDao(self.config)
 
     def standings(self, division):
@@ -30,3 +24,12 @@ class League(object):
     def roster(self, team):
         tables = self.dao.roster(team)
         return tables
+
+    def free_agents(self):
+        tables = self.dao.free_agents()
+        return tables
+
+    def config(self):
+        parser = ConfigParser.RawConfigParser()
+        parser.read('../config.ini')
+        return parser

@@ -96,6 +96,40 @@ class RosterTable(Table):
         return team
 
 
+class FreeAgentTable(Table):
+    def __init__(self, html):
+        parsed_html = self.parse_html(html)
+        columns = parsed_html[1]
+        data = parsed_html[2:(len(parsed_html))]
+        Table.__init__(self, 'Free Agents', columns)
+        self.populate(data)
+
+    def __repr__(self):
+        return str(self.rows)
+
+    def populate(self, data):
+        starters = data[0:9]
+        bench = data[11:len(data) - 1]
+        full = starters + bench
+        roster = {}
+        for i, team in enumerate(full, start=1):
+            if len(team) == 12:
+                team = self.scrub_bye(team)
+            elif len(team) == 10:
+                team = self.scrub_empty(team)
+            entry = RosterEntry(*team)
+            self.add_row(entry)
+        return roster
+
+    def scrub_empty(self, team):
+        team.extend(('--', '--', '--'))
+        return team
+
+    def scrub_bye(self, team):
+        team.insert(4, '** BYE **')
+        return team
+
+
 class BasicSettingsTable(Table):
     def __init__(self, basic_html, team_html):
         Table.__init__(self, 'BasicSettings', ['Key', 'Value'])
