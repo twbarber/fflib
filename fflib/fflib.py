@@ -1,6 +1,7 @@
 import ConfigParser
 from espn.dao import EspnDao
 
+
 class League(object):
 
     def __init__(self, platform):

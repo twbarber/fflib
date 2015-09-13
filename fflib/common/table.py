@@ -1,5 +1,5 @@
-__author__ = 'Tyler'
 import re
+
 
 class Table(object):
 
@@ -23,6 +23,7 @@ class Table(object):
             cols = [ele.text.strip() for ele in cols]
             data.append([ele for ele in cols if ele])
         return data
+
 
 class StandingsTable(Table):
 
@@ -77,7 +78,6 @@ class RosterTable(Table):
         starters = data[0:9]
         bench = data[11:len(data) - 1]
         full = starters + bench
-        roster = {}
         for i, team in enumerate(full, start=1):
             if len(team) == 12:
                 team = self.scrub_bye(team)
@@ -85,7 +85,6 @@ class RosterTable(Table):
                 team = self.scrub_empty(team)
             entry = RosterEntry(*team)
             self.add_row(entry)
-        return roster
 
     def scrub_empty(self, team):
         team.extend(('--', '--', '--'))
@@ -97,6 +96,7 @@ class RosterTable(Table):
 
 
 class FreeAgentTable(Table):
+
     def __init__(self, html):
         parsed_html = self.parse_html(html)
         columns = parsed_html[1]
@@ -108,18 +108,13 @@ class FreeAgentTable(Table):
         return str(self.rows)
 
     def populate(self, data):
-        starters = data[0:9]
-        bench = data[11:len(data) - 1]
-        full = starters + bench
-        roster = {}
-        for i, team in enumerate(full, start=1):
+        for i, team in enumerate(data, start=1):
             if len(team) == 12:
                 team = self.scrub_bye(team)
             elif len(team) == 10:
                 team = self.scrub_empty(team)
-            entry = RosterEntry(*team)
+            entry = FreeAgentEntry(*team)
             self.add_row(entry)
-        return roster
 
     def scrub_empty(self, team):
         team.extend(('--', '--', '--'))
@@ -230,6 +225,59 @@ class RosterEntry(object):
         values = [
             self.slot,
             self.player_team_pos,
+            self.opp,
+            self.status,
+            self.prk,
+            self.pts,
+            self.avg,
+            self.last,
+            self.proj,
+            self.oprk,
+            self.start,
+            self.own,
+            self.add
+        ]
+        return values
+
+
+class FreeAgentEntry(object):
+    def __init__(self, player_team_pos, team, opp, status, prk, pts, avg, last, proj, oprk, start, own, add):
+        self.player_team_pos = player_team_pos.encode('utf-8').strip()
+        self.team = team.encode('utf-8').strip()
+        self.opp = opp.encode('utf-8').strip()
+        self.status = status.encode('utf-8').strip()
+        self.prk = prk.encode('utf-8').strip()
+        self.pts = pts.encode('utf-8').strip()
+        self.avg = avg.encode('utf-8').strip()
+        self.last = last.encode('utf-8').strip()
+        self.proj = proj.encode('utf-8').strip()
+        self.oprk = oprk.encode('utf-8').strip()
+        self.start = start.encode('utf-8').strip()
+        self.own = own.encode('utf-8').strip()
+        self.add = add.encode('utf-8').strip()
+
+    def __repr__(self):
+        string = (
+            'Player:\t' + self.player_team_pos + '\n' +
+            'Team:\t' + self.team + '\n' +
+            'Opponent:\t' + self.opp + '\n' +
+            'Status:\t' + self.status + '\n' +
+            'Prk:\t' + self.prk + '\n' +
+            'Pts:\t' + self.pts + '\n' +
+            'Avg:\t' + self.avg + '\n' +
+            'Last:\t' + self.last + '\n' +
+            'Proj:\t' + self.proj + '\n' +
+            'Oprk:\t' + self.oprk + '\n' +
+            'Start:\t' + self.start + '\n' +
+            'Own:\t' + self.own + '\n' +
+            'Add/Drop:\t' + self.add
+        )
+        return string
+
+    def values(self):
+        values = [
+            self.player_team_pos,
+            self.team,
             self.opp,
             self.status,
             self.prk,

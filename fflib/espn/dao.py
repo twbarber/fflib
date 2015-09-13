@@ -1,7 +1,7 @@
 import mechanize
 import re
 from bs4 import BeautifulSoup
-from fflib.common.table import StandingsTable, StandingsDetailTable, RosterTable, BasicSettingsTable
+from fflib.common.table import StandingsTable, StandingsDetailTable, RosterTable, BasicSettingsTable, FreeAgentTable
 
 
 class EspnDao(object):
