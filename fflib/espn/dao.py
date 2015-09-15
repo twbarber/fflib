@@ -1,7 +1,6 @@
 import mechanize
-import re
-from bs4 import BeautifulSoup
 from fflib.common.table import StandingsTable, StandingsDetailTable, RosterTable, BasicSettingsTable, FreeAgentTable
+from fflib.espn.parser import Parser
 
 
 class EspnDao(object):
@@ -19,6 +18,7 @@ class EspnDao(object):
     def standings(self):
 
         html = self.standings_html()
+
         soup = BeautifulSoup(html, "html.parser")
         tables = soup.findAll("table", {"class": "tableBody"})
         standings_map = {}
