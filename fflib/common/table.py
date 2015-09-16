@@ -11,19 +11,6 @@ class Table(object):
     def add_row(self, values):
         self.rows.append(values)
 
-    def parse_html(self, html):
-        data = self.parse_rows(html)
-        return data
-
-    def parse_rows(self, table):
-        rows = table.findAll('tr')
-        data = []
-        for row in rows:
-            cols = row.findAll('td')
-            cols = [ele.text.strip() for ele in cols]
-            data.append([ele for ele in cols if ele])
-        return data
-
 
 class StandingsTable(Table):
 
