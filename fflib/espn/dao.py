@@ -19,8 +19,7 @@ class EspnDao(object):
 
         html = self.standings_html()
 
-        soup = BeautifulSoup(html, "html.parser")
-        tables = soup.findAll("table", {"class": "tableBody"})
+        tables = Parser.standings_values(html)
         standings_map = {}
         standings_map["east"] = StandingsTable(tables[0])
         standings_map["west"] = StandingsTable(tables[1])

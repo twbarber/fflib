@@ -3,9 +3,6 @@ from bs4 import BeautifulSoup
 
 
 class Parser(object):
-    def parse_html(self, html):
-        data = self.parse_rows(html)
-        return data
 
     def parse_rows(self, table):
         rows = table.findAll('tr')
@@ -23,3 +20,15 @@ class Parser(object):
     def scrub_bye(self, team):
         team.insert(4, '** BYE **')
         return team
+
+    def standings_values(self, html):
+        soup = BeautifulSoup(html, "html.parser")
+        tables = soup.findAll("table", {"class": "tableBody"})
+        values = parse
+        return tables
+
+    def standings_detail_values(self, html):
+        return;
+
+    def roster_values(self, html):
+        return;
