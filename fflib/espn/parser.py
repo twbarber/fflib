@@ -28,7 +28,12 @@ class Parser(object):
         return tables
 
     def standings_detail_values(self, html):
-        return;
+        return
 
     def roster_values(self, html):
-        return;
+        return
+
+    def free_agent_values(self, html):
+        soup = BeautifulSoup(html, "html.parser")
+        free_agent_html = soup.find("table", id=re.compile('playertable_'))
+        return

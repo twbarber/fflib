@@ -52,8 +52,7 @@ class EspnDao(object):
 
     def free_agents(self):
         html = self.free_agent_html()
-        soup = BeautifulSoup(html, "html.parser")
-        free_agent_html = soup.find("table", id=re.compile('playertable_'))
+
         free_agent_table = FreeAgentTable(free_agent_html)
         return free_agent_table
 
