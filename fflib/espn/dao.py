@@ -1,4 +1,6 @@
+from bs4 import BeautifulSoup
 import mechanize
+import re
 from fflib.common.table import StandingsTable, StandingsDetailTable, RosterTable, BasicSettingsTable, FreeAgentTable
 from fflib.espn.parser import Parser
 
@@ -18,7 +20,6 @@ class EspnDao(object):
     def standings(self):
 
         html = self.standings_html()
-
         tables = Parser.standings_values(html)
         standings_map = {}
         standings_map["east"] = StandingsTable(tables[0])
@@ -52,8 +53,7 @@ class EspnDao(object):
 
     def free_agents(self):
         html = self.free_agent_html()
-
-        free_agent_table = FreeAgentTable(free_agent_html)
+        free_agent_table = FreeAgentTable(html)
         return free_agent_table
 
     def basic_settings(self):
@@ -89,6 +89,7 @@ class EspnDao(object):
 
 
 class UrlConstants:
+
     STANDINGS_URL = 'http://games.espn.go.com/ffl/standings?leagueId={0}&seasonId={1}'
     SCOREBOARD_URL = 'http://games.espn.go.com/ffl/scoreboard?leagueId={0}&seasonId={1}'
     ROSTER_URL = 'http://games.espn.go.com/ffl/clubhouse?leagueId={0}&teamId={1}&seasonId={2}'
