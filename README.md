@@ -46,3 +46,15 @@ dropdown. Afterwards, you'll be able to access league data using this library.
     | Team 5 | 0 | 0 | 0 | .000 | -- |
     | Team 6 | 0 | 0 | 0 | .000 | -- |
     +--------+---+---+---+------+----+
+
+## Standings
+
+## Teams
+
+## Scoreboard
+
+## Transactions
+
+## Free Agency
+
+## League Settings

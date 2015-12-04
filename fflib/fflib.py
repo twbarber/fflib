@@ -10,6 +10,15 @@ class League(object):
             self.config = self.config()
             self.dao = EspnDao(self.config)
 
+    def teams(self):
+        return
+
+    def team(self, team_name):
+        return
+
+    def team(self, team_id):
+        return
+
     def standings(self, division):
         tables = self.dao.standings(division)
         return tables
@@ -18,17 +27,12 @@ class League(object):
         tables = self.dao.standings_detail()
         return tables
 
-    def rosters(self):
-        tables = self.dao.rosters()
-        return tables
-
-    def roster(self, team):
-        tables = self.dao.roster(team)
-        return tables
-
     def free_agents(self):
         tables = self.dao.free_agents()
         return tables
+
+    def settings(self):
+        return
 
     def config(self):
         parser = ConfigParser.RawConfigParser()
