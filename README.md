@@ -6,6 +6,8 @@ easy access to standings, rosters, free agent, and weekly matchups for use by le
 
 Currently, the only platform supported is ESPN. Others will be added in the future.
 
+fflib is available as both a web service, and python library, with additional language support planned.
+
 espn
 =========
 
