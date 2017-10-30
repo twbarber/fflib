@@ -1,7 +1,7 @@
-# ** This Project is no longer Maintained **
+This Project is no longer Maintained 
+====================================
 
-fflib
-=========
+# fflib
 
 fflib gives access to various fantasy football league data across multiple latforms. The library is intended to provide 
 easy access to standings, rosters, free agent, and weekly matchups for use by league managers.
@@ -10,8 +10,7 @@ Currently, the only platform supported is ESPN. Others will be added in the futu
 
 fflib is available as both a web service, and python library, with additional language support planned.
 
-espn
-=========
+# espn
 
 In order to use fflib with your ESPN fantasy football data, your league will have to be open to the public. To do this,
 your commisioner will need nable this option in the League's settings. Simply visit:
